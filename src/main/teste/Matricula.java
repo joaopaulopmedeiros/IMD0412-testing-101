@@ -51,16 +51,7 @@ public class Matricula {
 	 * A partir do artigo 104
 	 */
 	public void consolidarParcialmente() {
-		StatusAprovacao status;
-
-		if (cond) {
-
-		} else {
-
-		}
-		
-		this.status = status;
-
+		this.status = StatusAprovacao.APR;	
 	}
 
 	public Integer frequencia() {
