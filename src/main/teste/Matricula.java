@@ -3,10 +3,6 @@ package teste;
 import java.math.BigDecimal;
 
 public class Matricula {
-	private Turma turma;
-
-	private Aluno aluno;
-
 	private BigDecimal nota1;
 
 	private BigDecimal nota2;
