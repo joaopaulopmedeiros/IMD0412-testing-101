@@ -84,8 +84,8 @@ public class Matricula {
 	}
 
 	private void registrarMediaParcial() {
-		BigDecimal notaSum = this.nota1().add(this.nota2()).add(this.nota3());		
-        BigDecimal media = notaSum.divide(BigDecimal.valueOf(3), 2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal notaSum = this.nota1().add(this.nota2()).add(this.nota3());
+		BigDecimal media = notaSum.divide(BigDecimal.valueOf(3), 2, BigDecimal.ROUND_HALF_UP);
 		this.mediaParcial = media;
 	}
 
