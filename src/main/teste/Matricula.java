@@ -7,9 +7,9 @@ public class Matricula
 {
 	private static final BigDecimal TRES = BigDecimal.valueOf(3l);
 
-	private static final BigDecimal CINCO = BigDecimal.valueOf(5l);
+	private static final BigDecimal QUATRO = BigDecimal.valueOf(4l);
 
-	private static final BigDecimal SETE = BigDecimal.valueOf(7l);
+	private static final BigDecimal SEIS = BigDecimal.valueOf(6l);
 
 	private Turma turma;
 
@@ -67,13 +67,6 @@ public class Matricula
 		this.nota3 = nota3;
 	}
 
-	/**
-	 * Segue as regras estabelecidas pelos artigos do regulamento de graduação da
-	 * UFRN:
-	 * http://www.sistemas.ufrn.br/download/sigaa/public/regulamento_dos_cursos_de_graduacao.pdf
-	 * 
-	 * A partir do artigo 104
-	 */
 	public void consolidarParcialmente()
 	{
 		this.gerarMediaParcial();
@@ -131,23 +124,22 @@ public class Matricula
 	}
 
 	/**
-	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante que:
-	 * I - tem média parcial igual ou superior a 7,0 (sete)
+	 * É considerado aprovado, quanto à avaliação do rendimento acadêmico, oestudanteque tem média parcial igual ou superior a 6,0 (seis)
 	 * @return Boolean
 	 */
 	public Boolean estaAprovado() 
 	{
-		return this.mediaParcial.compareTo(SETE) >= 0;
+		return this.mediaParcial.compareTo(SEIS) >= 0;
 	}
 
 	/**
-	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante que:
-	 * II – tem média parcial igual ou superior a 5,0 (cinco), com rendimento acadêmico igual ou superior a 3,0 (três) em todas as unidades
+	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante com:
+	 * rendimento acadêmico igual ou superiora 4,0(quatro) em todas as unidades.
 	 * @return Boolean
 	 */
 	public Boolean estaAprovadoPorNota() 
 	{		
-		return this.mediaParcial.compareTo(CINCO) >= 0 && (this.nota1.compareTo(TRES) >= 0 && this.nota2.compareTo(TRES) >= 0 && this.nota3.compareTo(TRES) >= 0);
+		return this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0;
 	}
 
 	/**
