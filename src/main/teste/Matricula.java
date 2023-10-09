@@ -21,6 +21,8 @@ public class Matricula
 
 	private BigDecimal nota3;
 
+	private BigDecimal mediaParcial;
+
 	private Integer frequencia;
 
 	private StatusAprovacao status;
@@ -38,6 +40,11 @@ public class Matricula
 	public BigDecimal nota3()
 	{
 		return this.nota3;
+	}
+
+	public BigDecimal mediaParcial()
+	{
+		return this.mediaParcial;
 	}
 
 	public StatusAprovacao status()
@@ -69,11 +76,11 @@ public class Matricula
 	 */
 	public void consolidarParcialmente()
 	{
-		BigDecimal mediaParcial = nota1.add(nota2).add(nota3).divide(TRES, RoundingMode.HALF_EVEN);
+		this.gerarMediaParcial();
 
-		if (frequencia < 75) 
+		if (this.possuiFrequenciaInsuficiente()) 
 		{
-			if (mediaParcial.compareTo(TRES) < 0)
+			if (this.estaReprovado())
 			{
 				this.status = StatusAprovacao.REMF;
 			}
@@ -84,28 +91,19 @@ public class Matricula
 		}
 		else
 		{
-			if(mediaParcial.compareTo(TRES) < 0)
+			if(this.estaAprovado()) 
+			{
+				this.status = StatusAprovacao.APR;
+			}
+			else if(this.estaReprovado())
 			{
 				this.status = StatusAprovacao.REP;
 			}
-			else if(mediaParcial.compareTo(CINCO) < 0)
+			else if(this.estaEmRecuperacao())
 			{
 				this.status = StatusAprovacao.REC;
-			}
-			else if(mediaParcial.compareTo(SETE) < 0)
-			{
-				if(nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0)
-				{
-					this.status = StatusAprovacao.REC;
-				}
-				else
-				{
-					this.status = StatusAprovacao.APRN;
-				}
-			}
-			else
-			{
-				this.status = StatusAprovacao.APR;
+			} else {
+				this.status = StatusAprovacao.APRN;
 			}
 		}
 	}
@@ -118,5 +116,26 @@ public class Matricula
 	public void registrarFrequencia(Integer frequencia)
 	{
 		this.frequencia = frequencia;
+	}
+
+	public void gerarMediaParcial()
+	{
+		this.mediaParcial = nota1.add(nota2).add(nota3).divide(TRES, RoundingMode.HALF_EVEN);
+	}
+
+	public Boolean possuiFrequenciaInsuficiente() {
+		return this.frequencia < 75;
+	}
+
+	public Boolean estaReprovado() {
+		return this.mediaParcial.compareTo(TRES) < 0;
+	}
+
+	public Boolean estaEmRecuperacao() {
+		return (this.mediaParcial.compareTo(TRES) >= 0 && this.mediaParcial.compareTo(CINCO) < 0) || (mediaParcial.compareTo(SETE) < 0 && (nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0));
+	}
+
+	public Boolean estaAprovado() {
+		return this.mediaParcial.compareTo(SETE) >= 0;
 	}
 }
