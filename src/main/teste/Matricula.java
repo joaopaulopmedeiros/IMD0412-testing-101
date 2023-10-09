@@ -95,15 +95,17 @@ public class Matricula
 			{
 				this.status = StatusAprovacao.APR;
 			}
-			else if(this.estaReprovado())
+			else if (this.estaAprovadoPorNota()) 
 			{
-				this.status = StatusAprovacao.REP;
+				this.status = StatusAprovacao.APRN;
 			}
 			else if(this.estaEmRecuperacao())
 			{
 				this.status = StatusAprovacao.REC;
-			} else {
-				this.status = StatusAprovacao.APRN;
+			}
+			else
+			{
+				this.status = StatusAprovacao.REP;
 			}
 		}
 	}
@@ -123,21 +125,46 @@ public class Matricula
 		this.mediaParcial = nota1.add(nota2).add(nota3).divide(TRES, RoundingMode.HALF_EVEN);
 	}
 
-	public Boolean possuiFrequenciaInsuficiente() {
+	public Boolean possuiFrequenciaInsuficiente() 
+	{
 		return this.frequencia < 75;
 	}
 
-	public Boolean estaReprovado() {
-		return this.mediaParcial.compareTo(TRES) < 0;
-	}
-
-	public Boolean estaEmRecuperacao() {
-		Boolean possuiMediaDeRecuperacao = this.mediaParcial.compareTo(TRES) >= 0 && this.mediaParcial.compareTo(CINCO) < 0;
-		Boolean possuiNotaInsuficiente = this.mediaParcial.compareTo(CINCO) >= 0 && this.mediaParcial.compareTo(SETE) < 0 && (nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0);
-		return possuiMediaDeRecuperacao || possuiNotaInsuficiente;
-	}
-
-	public Boolean estaAprovado() {
+	/**
+	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante que:
+	 * I - tem média parcial igual ou superior a 7,0 (sete)
+	 * @return Boolean
+	 */
+	public Boolean estaAprovado() 
+	{
 		return this.mediaParcial.compareTo(SETE) >= 0;
+	}
+
+	/**
+	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante que:
+	 * II – tem média parcial igual ou superior a 5,0 (cinco), com rendimento acadêmico igual ou superior a 3,0 (três) em todas as unidades
+	 * @return Boolean
+	 */
+	public Boolean estaAprovadoPorNota() 
+	{		
+		return this.mediaParcial.compareTo(CINCO) >= 0 && (this.nota1.compareTo(TRES) >= 0 && this.nota2.compareTo(TRES) >= 0 && this.nota3.compareTo(TRES) >= 0);
+	}
+
+	/**
+	 * O estudante que não atinge os critérios de aprovação definidos no artigo 105 tem direito à realização de uma avaliação de reposição se tiver média parcial igual ou superior a 3,0 (três). 
+	 * @return Boolean
+	 */
+	public Boolean estaEmRecuperacao() 
+	{
+		return !this.estaAprovado() && !this.estaAprovadoPorNota() && this.mediaParcial.compareTo(TRES) >= 0;
+	}
+	
+	/**
+	 * O estudante que não atinge os critérios de aprovação definidos no artigo 105 e que não pode realizar avaliação de reposição é considerado reprovado,
+	 * @return Boolean
+	 */
+	public Boolean estaReprovado() 
+	{
+		return !this.estaAprovado() && !this.estaAprovadoPorNota() && !this.estaEmRecuperacao();
 	}
 }
