@@ -88,10 +88,6 @@ public class Matricula
 			{
 				this.status = StatusAprovacao.APR;
 			}
-			else if (this.estaAprovadoPorNota()) 
-			{
-				this.status = StatusAprovacao.APRN;
-			}
 			else if(this.estaEmRecuperacao())
 			{
 				this.status = StatusAprovacao.REC;
@@ -129,17 +125,7 @@ public class Matricula
 	 */
 	public Boolean estaAprovado() 
 	{
-		return this.mediaParcial.compareTo(SEIS) >= 0;
-	}
-
-	/**
-	 * É considerado aprovado, quanto à avaliação de aprendizagem, o estudante com:
-	 * rendimento acadêmico igual ou superiora 4,0(quatro) em todas as unidades.
-	 * @return Boolean
-	 */
-	public Boolean estaAprovadoPorNota() 
-	{		
-		return this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0;
+		return this.mediaParcial.compareTo(SEIS) >= 0 && (this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0);
 	}
 
 	/**
@@ -148,7 +134,7 @@ public class Matricula
 	 */
 	public Boolean estaEmRecuperacao() 
 	{
-		return !this.estaAprovado() && !this.estaAprovadoPorNota() && this.mediaParcial.compareTo(TRES) >= 0;
+		return !this.estaAprovado() && this.mediaParcial.compareTo(TRES) >= 0;
 	}
 	
 	/**
@@ -157,6 +143,6 @@ public class Matricula
 	 */
 	public Boolean estaReprovado() 
 	{
-		return !this.estaAprovado() && !this.estaAprovadoPorNota() && !this.estaEmRecuperacao();
+		return !this.estaAprovado() && !this.estaEmRecuperacao();
 	}
 }
