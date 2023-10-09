@@ -1,143 +1,125 @@
 package teste;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-public class Matricula {
+public class Matricula
+{
+	private static final BigDecimal TRES = BigDecimal.valueOf(3l);
+
+	private static final BigDecimal CINCO = BigDecimal.valueOf(5l);
+
+	private static final BigDecimal SETE = BigDecimal.valueOf(7l);
+
+	private Turma turma;
+
+	private Aluno aluno;
+
 	private BigDecimal nota1;
 
 	private BigDecimal nota2;
 
 	private BigDecimal nota3;
 
-	private BigDecimal mediaParcial;
-	
 	private Integer frequencia;
 
 	private StatusAprovacao status;
 
-	public BigDecimal nota1() {
+	public BigDecimal nota1()
+	{
 		return this.nota1;
 	}
 
-	public BigDecimal nota2() {
+	public BigDecimal nota2()
+	{
 		return this.nota2;
 	}
 
-	public BigDecimal nota3() {
+	public BigDecimal nota3()
+	{
 		return this.nota3;
 	}
 
-	public BigDecimal mediaParcial() {
-		return this.mediaParcial;
-	}
-
-	public StatusAprovacao status() {
+	public StatusAprovacao status()
+	{
 		return this.status;
 	}
 
-	public void registrarNota1(BigDecimal nota1) {
+	public void registrarNota1(BigDecimal nota1)
+	{
 		this.nota1 = nota1;
 	}
 
-	public void registrarNota2(BigDecimal nota2) {
+	public void registrarNota2(BigDecimal nota2)
+	{
 		this.nota2 = nota2;
 	}
 
-	public void registrarNota3(BigDecimal nota3) {
+	public void registrarNota3(BigDecimal nota3)
+	{
 		this.nota3 = nota3;
 	}
 
-	public void consolidarParcialmente() {
-		this.registrarMediaParcial();
+	/**
+	 * Segue as regras estabelecidas pelos artigos do regulamento de graduação da
+	 * UFRN:
+	 * http://www.sistemas.ufrn.br/download/sigaa/public/regulamento_dos_cursos_de_graduacao.pdf
+	 * 
+	 * A partir do artigo 104
+	 */
+	public void consolidarParcialmente()
+	{
 
-		if (this.estaAprovado()) 
+		BigDecimal mediaParcial = nota1.add(nota2).add(nota3).divide(TRES, RoundingMode.HALF_EVEN);
+
+		if (frequencia < 75) 
 		{
-			this.status = StatusAprovacao.APR;
-		} 
-		else if (this.estaAprovadoPorNota()) 
-		{
-			this.status = StatusAprovacao.APRN;
+
+			if (mediaParcial.compareTo(TRES) < 0)
+			{
+				this.status = StatusAprovacao.REMF;
+			}
+			else
+			{
+				this.status = StatusAprovacao.REPF;
+			}
+
 		}
-		else if (this.estaEmRecuperacao()) 
+		else
 		{
-			this.status = StatusAprovacao.REC;
-		} 
-		else if (this.estaReprovado()) 
-		{
-			this.status = StatusAprovacao.REP;
-		}
-		else if (this.estaReprovadoPorMediaEFalta()) 
-		{
-			this.status = StatusAprovacao.REMF;
-		}
-		else {
-			this.status = StatusAprovacao.REPF;	
+			if(mediaParcial.compareTo(TRES) < 0)
+			{
+				this.status = StatusAprovacao.REP;
+			}
+			else if(mediaParcial.compareTo(CINCO) < 0)
+			{
+				this.status = StatusAprovacao.REC;
+			}
+			else if(mediaParcial.compareTo(SETE) < 0)
+			{
+				if(nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0)
+				{
+					this.status = StatusAprovacao.REC;
+				}
+				else
+				{
+					this.status = StatusAprovacao.APRN;
+				}
+			}
+			else
+			{
+				this.status = StatusAprovacao.APR;
+			}
 		}
 	}
 
-	public Integer frequencia() {
+	public Integer frequencia()
+	{
 		return frequencia;
 	}
 
-	public void registrarFrequencia(Integer frequencia) {
+	public void registrarFrequencia(Integer frequencia)
+	{
 		this.frequencia = frequencia;
-	}
-
-	private void registrarMediaParcial() {
-		BigDecimal notaSum = this.nota1().add(this.nota2()).add(this.nota3());
-		BigDecimal media = notaSum.divide(BigDecimal.valueOf(3), 2, BigDecimal.ROUND_HALF_UP);
-		this.mediaParcial = media;
-	}
-
-	/**
-	 * Média parcial igual ou superior a 7,0 com assiduidade (frequência) igual ou superior a 75% 
-	 */
-	private Boolean estaAprovado() {
-		return this.mediaParcial().compareTo(BigDecimal.valueOf(7)) >= 0 && this.frequencia() >= 75;
-	}
-
-	/**
-	 * Média parcial igual ou superior a 5,0 e menor que 7,0 com nota igual ou superior a 3,0 em todas as unidades
-	 */
-	private Boolean estaAprovadoPorNota() {
-		BigDecimal tres = BigDecimal.valueOf(3);
-		BigDecimal cinco = BigDecimal.valueOf(5);
-		BigDecimal sete = BigDecimal.valueOf(7);
-
-		return this.mediaParcial().compareTo(cinco) >= 0 &&
-		this.mediaParcial().compareTo(sete) < 0 &&
-		this.nota1().compareTo(tres)>= 0 && this.nota2().compareTo(tres)>= 0 && this.nota3().compareTo(tres) >= 0 &&
- 		this.frequencia() >= 75;
-	}
-
-	/**
-	 * Recuperação por:
-	 * Nota: Média parcial igual ou superior a 5,0 e menor que 7,0 com nota inferior a 3,0 em pelo menos uma das unidades
-	 * Média: Média parcial igual ou superior a 3,0 e menor do que 5,0 com nota igual ou superior a 3,0 em todas as unidades
-	 * Média e Nota: Média parcial igual ou superior a 3,0 e menor do que 5,0 com nota inferior a 3,0 em pelo menos uma das unidades
-	 */
-	private Boolean estaEmRecuperacao() {
-		BigDecimal tres = BigDecimal.valueOf(3);
-		BigDecimal cinco = BigDecimal.valueOf(5);
-		BigDecimal sete = BigDecimal.valueOf(7);
-		
-		Boolean emRecuperacaoPorNota = this.mediaParcial().compareTo(cinco) >= 0 && this.mediaParcial().compareTo(sete) < 0 && (this.nota1().compareTo(tres) < 0 || this.nota2().compareTo(tres) < 0 || this.nota3().compareTo(tres) < 0);
-		Boolean emRecuperacaoPorMedia = this.mediaParcial().compareTo(tres) >= 0 && this.mediaParcial().compareTo(cinco) < 0 && (this.nota1().compareTo(tres) >= 0 && this.nota2().compareTo(tres) >= 0 && this.nota3().compareTo(tres) >= 0);
-		Boolean emRecuperacaoPorMediaENota = this.mediaParcial().compareTo(tres) >= 0 && this.mediaParcial().compareTo(cinco) < 0 && (this.nota1().compareTo(tres) < 0 || this.nota2().compareTo(tres) < 0 || this.nota3().compareTo(tres) < 0);
-		return (emRecuperacaoPorMedia || emRecuperacaoPorNota || emRecuperacaoPorMediaENota) && this.frequencia() >= 75;
-	}
-
-	/**
-	 * Média parcial inferior a 3,0 e assiduidade igual ou superior a 75%
-	 */
-	private Boolean estaReprovado() {
-		return this.mediaParcial().compareTo(BigDecimal.valueOf(3)) < 0 && this.frequencia() >= 75;
-	}
-
-	/**
-	 * Média parcial inferior a 3,0 e frequência inferior a 75%
-	 */
-	private Boolean estaReprovadoPorMediaEFalta() {
-		return this.mediaParcial().compareTo(BigDecimal.valueOf(3)) < 0 && this.frequencia() < 75;
 	}
 }
