@@ -120,7 +120,8 @@ public class Matricula
 	}
 
 	/**
-	 * É considerado aprovado, quanto à avaliação do rendimento acadêmico, oestudanteque tem média parcial igual ou superior a 6,0 (seis)
+	 * É considerado aprovado, quanto à avaliação do rendimento acadêmico, o estudante que tem média parcial igual ou superior a 6,0 (seis);
+	 * com rendimento acadêmico igual ou superior a 4,0(quatro) em todas as unidades.
 	 * @return Boolean
 	 */
 	public Boolean estaAprovado() 
