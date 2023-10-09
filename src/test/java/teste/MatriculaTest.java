@@ -16,7 +16,7 @@ class MatriculaTest {
         "5.5, 4.5, 5.0, 90, APRN",
         "6.0, 7.0, 8.0, 100, APR"
     })
-    @DisplayName("Teste consolidarParcialmente")
+    @DisplayName("Teste de consolidação parcial")
     void consolidarParcialmente(BigDecimal nota1, BigDecimal nota2, BigDecimal nota3, Integer frequencia, StatusAprovacao expectedStatus) {
         Matricula matricula = new Matricula();
 
