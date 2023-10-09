@@ -69,12 +69,10 @@ public class Matricula
 	 */
 	public void consolidarParcialmente()
 	{
-
 		BigDecimal mediaParcial = nota1.add(nota2).add(nota3).divide(TRES, RoundingMode.HALF_EVEN);
 
 		if (frequencia < 75) 
 		{
-
 			if (mediaParcial.compareTo(TRES) < 0)
 			{
 				this.status = StatusAprovacao.REMF;
@@ -83,7 +81,6 @@ public class Matricula
 			{
 				this.status = StatusAprovacao.REPF;
 			}
-
 		}
 		else
 		{
