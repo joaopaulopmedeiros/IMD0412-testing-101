@@ -126,7 +126,8 @@ public class Matricula
 	 */
 	public Boolean estaAprovado() 
 	{
-		return this.mediaParcial.compareTo(SEIS) >= 0 && (this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0);
+		return this.mediaParcial.compareTo(SEIS) >= 0 && 
+		(this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0);
 	}
 
 	/**
