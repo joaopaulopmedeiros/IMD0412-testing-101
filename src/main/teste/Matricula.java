@@ -132,7 +132,9 @@ public class Matricula
 	}
 
 	public Boolean estaEmRecuperacao() {
-		return (this.mediaParcial.compareTo(TRES) >= 0 && this.mediaParcial.compareTo(CINCO) < 0) || (mediaParcial.compareTo(SETE) < 0 && (nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0));
+		Boolean possuiMediaDeRecuperacao = this.mediaParcial.compareTo(TRES) >= 0 && this.mediaParcial.compareTo(CINCO) < 0;
+		Boolean possuiNotaInsuficiente = this.mediaParcial.compareTo(CINCO) >= 0 && this.mediaParcial.compareTo(SETE) < 0 && (nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0);
+		return possuiMediaDeRecuperacao || possuiNotaInsuficiente;
 	}
 
 	public Boolean estaAprovado() {
