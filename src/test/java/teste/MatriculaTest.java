@@ -10,11 +10,11 @@ class MatriculaTest {
 	@ParameterizedTest
     @CsvSource({
         "2.5, 2.5, 2.5, 70, REMF",
-        "3.5, 3.5, 3.5, 70, REPF",
-        "2.5, 2.5, 2.5, 75, REP",
-        "4.5, 4.5, 4.5, 75, REC",
-        "5.5, 4.5, 5.0, 75, APRN",
-        "7.5, 7.5, 7.5, 75, APR"
+        "2.5, 3.5, 3.0, 74, REPF",
+        "1.0, 2.0, 3.0, 75, REP",
+        "3.0, 4.5, 1.5, 80, REC",
+        "5.5, 4.5, 5.0, 90, APRN",
+        "6.0, 7.0, 8.0, 100, APR"
     })
     @DisplayName("Teste consolidarParcialmente")
     void consolidarParcialmente(BigDecimal nota1, BigDecimal nota2, BigDecimal nota3, Integer frequencia, StatusAprovacao expectedStatus) {
