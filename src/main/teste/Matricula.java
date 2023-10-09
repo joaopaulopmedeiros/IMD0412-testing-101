@@ -7,10 +7,10 @@ public class Matricula
 {
 	private static final BigDecimal TRES = BigDecimal.valueOf(3l);
 
-	private static final BigDecimal CINCO = BigDecimal.valueOf(5l);
-
-	private static final BigDecimal SETE = BigDecimal.valueOf(7l);
-
+	private static final BigDecimal QUATRO = BigDecimal.valueOf(4l);
+	
+	private static final BigDecimal SEIS = BigDecimal.valueOf(6l);
+	
 	private Turma turma;
 
 	private Aluno aluno;
@@ -95,15 +95,13 @@ public class Matricula
 			{
 				this.status = StatusAprovacao.APR;
 			}
-			else if(this.estaReprovado())
-			{
-				this.status = StatusAprovacao.REP;
-			}
 			else if(this.estaEmRecuperacao())
 			{
 				this.status = StatusAprovacao.REC;
-			} else {
-				this.status = StatusAprovacao.APRN;
+			}
+			else
+			{
+				this.status = StatusAprovacao.REP;
 			}
 		}
 	}
@@ -128,16 +126,14 @@ public class Matricula
 	}
 
 	public Boolean estaReprovado() {
-		return this.mediaParcial.compareTo(TRES) < 0;
+		return !this.estaAprovado() && !this.estaEmRecuperacao();
 	}
 
 	public Boolean estaEmRecuperacao() {
-		Boolean possuiMediaDeRecuperacao = this.mediaParcial.compareTo(TRES) >= 0 && this.mediaParcial.compareTo(CINCO) < 0;
-		Boolean possuiNotaInsuficiente = this.mediaParcial.compareTo(CINCO) >= 0 && this.mediaParcial.compareTo(SETE) < 0 && (nota1.compareTo(TRES) < 0 || nota2.compareTo(TRES) < 0 || nota3.compareTo(TRES) < 0);
-		return possuiMediaDeRecuperacao || possuiNotaInsuficiente;
+		return !this.estaAprovado() && this.mediaParcial.compareTo(TRES) >= 0;
 	}
 
 	public Boolean estaAprovado() {
-		return this.mediaParcial.compareTo(SETE) >= 0;
+		return this.mediaParcial.compareTo(SEIS) >= 0 && (this.nota1.compareTo(QUATRO) >= 0 && this.nota2.compareTo(QUATRO) >= 0 && this.nota3.compareTo(QUATRO) >= 0);
 	}
 }

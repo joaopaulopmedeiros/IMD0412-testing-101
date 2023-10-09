@@ -13,7 +13,6 @@ class MatriculaTest {
         "2.5, 3.5, 3.0, 74, REPF",
         "1.0, 2.0, 3.0, 75, REP",
         "3.0, 4.5, 1.5, 80, REC",
-        "5.5, 4.5, 5.0, 90, APRN",
         "6.0, 7.0, 8.0, 100, APR"
     })
     @DisplayName("Teste de consolidação parcial")
